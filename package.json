@@ -1,0 +1,25 @@
+{
+  "name": "mirror_backend",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon Mirror_Backend/index.js",
+    "build": "npm install && npm install --prefix Mirror_Frontend && npm run build --prefix Mirror_Frontend",
+    "start": "nodemon Mirror_Backend/index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.13.2",
+    "nodemon": "^3.1.10",
+    "path-to-regexp": "^8.2.0",
+    "socket.io": "^4.8.1"
+  }
+}
