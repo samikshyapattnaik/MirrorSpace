@@ -1,5 +1,5 @@
 import React from 'react'
-import Offerheader from '../header/Offerheader'
+import OfferHeader from '../header/OfferHeader'
 import KitchenHome from './KitchenHome'
 import KitchenBrands from './KitchenBrands'
 import KitchenCards from './KitchenCard'
@@ -11,7 +11,7 @@ import Footer from '../footer/Footer'
 const KitchenInterior = () => {
   return (
     <div>
-      <Offerheader />
+      <OfferHeader />
       <KitchenHome />
       <KitchenBrands />
       <KitchenCards/>
