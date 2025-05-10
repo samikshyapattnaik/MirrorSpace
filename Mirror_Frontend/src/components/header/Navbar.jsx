@@ -49,7 +49,7 @@ const Navbar = ({onLoginClick}) => {
           <div className="hidden md:block">
             <ul className="flex items-center gap-10"> 
               <li className="group relative cursor-pointer text-black/80 hover:text-primary">
-                <a href="/home" className="flex items-center gap-[2px] h-[72px]">
+                <a href="mirrorspace-40ev.onrender.com/home" className="flex items-center gap-[2px] h-[72px]">
                   Home{""}
                   <span>
                     <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
@@ -76,7 +76,7 @@ const Navbar = ({onLoginClick}) => {
                   <div className="grid grid-cols-3 gap-5">
                     <div className="overflow-hidden">
                       <img
-                        src="/dropdown_img2.jpeg"
+                        src="/download.jpeg"
                         alt="not found"
                         className="max-h-[300px] w-full rounded-b-3xl object-fill"
                       />
@@ -154,12 +154,12 @@ const Navbar = ({onLoginClick}) => {
                 </div>
               </li>
               <li className=" text-black/80 hover:text-primary">
-              <a href="/about">About Us</a>
+              <a href="mirrorspace-40ev.onrender.com/about">About Us</a>
               </li>
               <li className=" text-black/80 hover:text-primary"
                    onClick={onLoginClick}> Login</li>
               <li className="text-black/80 hover:text-primary">
-              <a href="/blogs">Our Blogs</a>
+              <a href="mirrorspace-40ev.onrender.com//blogs">Our Blogs</a>
               </li>
               
               {/* Light and dark mode switcher */}

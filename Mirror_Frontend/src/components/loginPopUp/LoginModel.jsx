@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AiOutlineClose } from "react-icons/ai";
-import { FaFacebook } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from "@react-oauth/google";
+import FacebookLogin from "react-facebook-login";
+import { FaFacebook } from "react-icons/fa";
 
 const LoginModal = ({ onClose, onLogin }) => {
   const navigate = useNavigate();
@@ -13,61 +14,92 @@ const LoginModal = ({ onClose, onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Standard Email/Password Login
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const payload = {
-      email,
-      password,
-    };
-
     try {
-      const res = await axios.post("http://localhost:5000/user/login", payload);
-      setLoading(false);
+      const res = await axios.post("http://localhost:5000/user/login", {
+        email,
+        password,
+      });
+
       toast.success("Login successful");
       localStorage.setItem("token", res.data.token);
       if (onLogin) onLogin();
       navigate("/");
     } catch (err) {
-      setLoading(false);
       toast.error(err.response?.data?.message || "Login failed");
       console.error("Login failed", err);
+    } finally {
+      setLoading(false);
     }
-    
   };
-// handel google login
-const handleGoogleSuccess = (credentialResponse) => {
-  alert("Google login successful", credentialResponse);
-};
 
-const handleGoogleFailure = () => {
-  toast.error("Google login failed");
-};
-// handel facebook login
-  const handleFacebookLogin = () => {
-    alert("Facebook Login Clicked");
+  // Google Login
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const res = await axios.post("http://localhost:5000/user/google-login", {
+        token: credentialResponse.credential,
+      });
+
+      toast.success("Google login successful");
+      localStorage.setItem("token", res.data.token);
+      if (onLogin) onLogin();
+      navigate("/");
+    } catch (err) {
+      toast.error("Google login failed");
+      console.error(err);
+    }
+  };
+
+  const handleGoogleFailure = () => {
+    toast.error("Google login failed");
+  };
+
+  // Facebook Login
+  const handleFacebookResponse = async (response) => {
+    try {
+      const res = await axios.post("http://localhost:5000/user/facebook-login", {
+        accessToken: response.accessToken,
+        userID: response.userID,
+      });
+
+      toast.success("Facebook login successful");
+      localStorage.setItem("token", res.data.token);
+      if (onLogin) onLogin();
+      navigate("/");
+    } catch (err) {
+      toast.error("Facebook login failed");
+      console.error(err);
+    }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-2 rounded shadow w-96 relative">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+      <div className="bg-white p-4 rounded shadow w-full max-w-md relative">
         {/* Close Button */}
         <button
           className="absolute top-2 right-2 text-gray-600 hover:text-black"
           onClick={onClose}
+          aria-label="Close login modal"
         >
-          <AiOutlineClose size={24} />
+          <AiOutlineClose className="w-6 h-6 sm:w-5 sm:h-5" />
         </button>
 
-        <h2 className="text-2xl font-bold mb-4">Login</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+
         <form onSubmit={handleSubmit} className="mb-4">
-          {/* Email Field */}
+          {/* Email */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium mb-1">
+              Email
+            </label>
             <input
               type="email"
               id="email"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
@@ -76,12 +108,15 @@ const handleGoogleFailure = () => {
             />
           </div>
 
-          {/* Password Field with Toggle */}
+          {/* Password */}
           <div className="mb-4 relative">
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium mb-1">
+              Password
+            </label>
             <input
               type={showPassword ? "text" : "password"}
               id="password"
+              name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
@@ -102,34 +137,40 @@ const handleGoogleFailure = () => {
             type="submit"
             disabled={loading}
             className={`w-full py-2 rounded mb-4 text-white ${
-              loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
+        </form>
 
-        {/* Divider */}
         <div className="text-center text-gray-400 mb-2">or</div>
-       
+
         {/* Google Login */}
-        <div className="w-full mb-3">
-           <GoogleLogin
-             onSuccess={handleGoogleSuccess}
-             onError={handleGoogleFailure}
-             width="100%"
-             useOneTap
+        <div className="mb-3 flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleFailure}
+            useOneTap
           />
-          </div>
+        </div>
+
         {/* Facebook Login */}
-        <button
-          onClick={handleFacebookLogin}
-          className="w-full flex items-center justify-center gap-2 border py-2 rounded text-blue-600"
-        >
-          <FaFacebook size={20} />
-          Login with Facebook
-        </button>
-  </form>
-        {/* Sign Up Redirect */}
+        <div className="mb-4 flex justify-center">
+          <FacebookLogin
+            appId="YOUR_FACEBOOK_APP_ID"
+            autoLoad={false}
+            fields="name,email,picture"
+            callback={handleFacebookResponse}
+            cssClass="flex items-center justify-center gap-2 border py-2 rounded text-blue-600 w-full"
+            icon={<FaFacebook size={20} />}
+            textButton=" Login with Facebook"
+          />
+        </div>
+
+        {/* Sign Up Link */}
         <p className="text-center text-sm mt-4">
           Don’t have an account?{" "}
           <span
@@ -148,4 +189,3 @@ const handleGoogleFailure = () => {
 };
 
 export default LoginModal;
-
