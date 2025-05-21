@@ -8,7 +8,7 @@ const SkiillsDate =[
    {
     name:"Experience",
     icon:(
-        <SlNote className='text-5xl text-red-600 group-hover:text-black duration-300'/>
+        <SlNote className='text-5xl text-orange-600 group-hover:text-black duration-300'/>
     
     ),
    
@@ -19,7 +19,7 @@ const SkiillsDate =[
     {
      name:"Quality",
      icon:(
-          <MdOutlineHighQuality  className='text-5xl text-red-600 group-hover:text-black duration-300'/>
+          <MdOutlineHighQuality  className='text-5xl text-orange-600 group-hover:text-black duration-300'/>
      
      ),
      Link:"#",
@@ -29,7 +29,7 @@ const SkiillsDate =[
     {
      name:"Customer Service",
      icon:(
-          <MdMiscellaneousServices  className='text-5xl text-red-600 group-hover:text-black duration-300'/>
+          <MdMiscellaneousServices  className='text-5xl text-orange-600 group-hover:text-black duration-300'/>
      
      ),
      Link:"#",
@@ -39,7 +39,7 @@ const SkiillsDate =[
     {
      name:"Innovation",
      icon:(
-          <MdOutlineLocalOffer className='text-5xl text-red-600 group-hover:text-black duration-500'/>
+          <MdOutlineLocalOffer className='text-5xl text-orange-600 group-hover:text-black duration-500'/>
      
      ),
      Link:"#",

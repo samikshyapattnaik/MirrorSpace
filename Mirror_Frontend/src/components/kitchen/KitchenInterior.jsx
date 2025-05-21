@@ -13,9 +13,9 @@ const KitchenInterior = () => {
     <div>
       <OfferHeader />
       <KitchenHome />
-      <KitchenBrands />
-      <KitchenCards/>
       <Promise/>
+      <KitchenCards/>
+      <KitchenBrands/>
       <DelivaryProcess />
       <KitchenContact/>
       <Footer />

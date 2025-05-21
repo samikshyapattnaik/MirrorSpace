@@ -26,7 +26,7 @@ const OurPromises = () => {
   return (
     <section className="py-12 bg-white text-center">
       <h2 className="text-3xl font-semibold mb-8">Our Promises</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-16">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-16">
         {promises.map((promise, index) => (
           <div
             key={index}

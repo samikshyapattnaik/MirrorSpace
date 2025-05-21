@@ -3,9 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { AiOutlineClose } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
-import FacebookLogin from "react-facebook-login";
-import { FaFacebook } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 
 const LoginModal = ({ onClose, onLogin }) => {
   const navigate = useNavigate();
@@ -14,66 +12,30 @@ const LoginModal = ({ onClose, onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Standard Email/Password Login
+  // Email/Password login
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const res = await axios.post("http://localhost:5000/user/login", {
+      const res = await axios.post("http://localhost:8080/user/login", {
         email,
         password,
       });
 
       toast.success("Login successful");
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("token", res.data.token);  // Save the token in local storage
       if (onLogin) onLogin();
-      navigate("/");
+      navigate("/");  // Redirect to home page after successful login
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
-      console.error("Login failed", err);
     } finally {
       setLoading(false);
     }
   };
 
-  // Google Login
-  const handleGoogleSuccess = async (credentialResponse) => {
-    try {
-      const res = await axios.post("http://localhost:5000/user/google-login", {
-        token: credentialResponse.credential,
-      });
-
-      toast.success("Google login successful");
-      localStorage.setItem("token", res.data.token);
-      if (onLogin) onLogin();
-      navigate("/");
-    } catch (err) {
-      toast.error("Google login failed");
-      console.error(err);
-    }
-  };
-
-  const handleGoogleFailure = () => {
-    toast.error("Google login failed");
-  };
-
-  // Facebook Login
-  const handleFacebookResponse = async (response) => {
-    try {
-      const res = await axios.post("http://localhost:5000/user/facebook-login", {
-        accessToken: response.accessToken,
-        userID: response.userID,
-      });
-
-      toast.success("Facebook login successful");
-      localStorage.setItem("token", res.data.token);
-      if (onLogin) onLogin();
-      navigate("/");
-    } catch (err) {
-      toast.error("Facebook login failed");
-      console.error(err);
-    }
+  // Google login (redirect to backend)
+  const handleGoogleLogin = () => {
+    window.open("http://localhost:8080/auth/google", "_self"); // Redirect to backend Google login
   };
 
   return (
@@ -81,11 +43,11 @@ const LoginModal = ({ onClose, onLogin }) => {
       <div className="bg-white p-4 rounded shadow w-full max-w-md relative">
         {/* Close Button */}
         <button
-          className="absolute top-2 right-2 text-gray-600 hover:text-black"
           onClick={onClose}
+          className="absolute top-2 right-2 text-gray-600 hover:text-black"
           aria-label="Close login modal"
         >
-          <AiOutlineClose className="w-6 h-6 sm:w-5 sm:h-5" />
+          <AiOutlineClose className="w-6 h-6" />
         </button>
 
         <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
@@ -99,11 +61,10 @@ const LoginModal = ({ onClose, onLogin }) => {
             <input
               type="email"
               id="email"
-              name="email"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              required
               className="w-full border p-2 rounded"
             />
           </div>
@@ -116,11 +77,10 @@ const LoginModal = ({ onClose, onLogin }) => {
             <input
               type={showPassword ? "text" : "password"}
               id="password"
-              name="password"
+              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              required
               className="w-full border p-2 rounded pr-10"
             />
             <button
@@ -136,49 +96,37 @@ const LoginModal = ({ onClose, onLogin }) => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 rounded mb-4 text-white ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+            className={`w-full py-2 rounded text-white ${
+              loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
+        {/* Or Text */}
         <div className="text-center text-gray-400 mb-2">or</div>
 
         {/* Google Login */}
         <div className="mb-3 flex justify-center">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleFailure}
-            useOneTap
-          />
-        </div>
-
-        {/* Facebook Login */}
-        <div className="mb-4 flex justify-center">
-          <FacebookLogin
-            appId="YOUR_FACEBOOK_APP_ID"
-            autoLoad={false}
-            fields="name,email,picture"
-            callback={handleFacebookResponse}
-            cssClass="flex items-center justify-center gap-2 border py-2 rounded text-blue-600 w-full"
-            icon={<FaFacebook size={20} />}
-            textButton=" Login with Facebook"
-          />
+          <button
+            onClick={handleGoogleLogin}
+            className="flex items-center gap-2 px-4 py-2 border rounded hover:bg-gray-100"
+          >
+            <FaGoogle className="text-red-500" />
+            <span>Continue with Google</span>
+          </button>
         </div>
 
         {/* Sign Up Link */}
         <p className="text-center text-sm mt-4">
           Don’t have an account?{" "}
           <span
-            className="text-blue-600 font-semibold cursor-pointer"
             onClick={() => {
               onClose();
               navigate("/signup");
             }}
+            className="text-blue-600 font-semibold cursor-pointer"
           >
             Sign up
           </span>

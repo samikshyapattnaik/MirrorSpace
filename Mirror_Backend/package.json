@@ -7,18 +7,22 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon Mirror_Backend/index.js",
-    "build": "npm install && npm install --prefix Mirror_Frontend && npm run build --prefix Mirror_Frontend",
-    "start": "nodemon Mirror_Backend/index.js"
+    "dev": "nodemon index.js",
+    "build": "echo 'No build step required'",
+    "start": "node index.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cookie-session": "^2.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
     "nodemon": "^3.1.10",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "path-to-regexp": "^8.2.0",
     "socket.io": "^4.8.1"
   }

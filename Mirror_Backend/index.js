@@ -5,55 +5,107 @@ require('dotenv').config();
 const path = require('path');
 const http = require('http');
 const userRoute = require('./routes/userRoutes');
+const passport = require('passport');
+const session = require('express-session');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const Auth = require('./modal/Auth');
 const app = express();
 const server = http.createServer(app);
 
-// Middleware
-app.use(express.json());
-app.use(cors({ origin: '*', credentials: true }));
+// Middleware: session should be BEFORE passport.session()
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false, // more secure; set true only if needed
+}));
 
-// Serve static frontend files
-const _dirname = path.resolve();
-app.use(express.static(path.join(_dirname, 'Mirror_Frontend', 'dist')));
+// Passport initialization (AFTER session)
+app.use(passport.initialize());
+app.use(passport.session());
 
-// Routes
-app.use('/users', userRoute);
+// Google OAuth Strategy
+passport.use(new GoogleStrategy({
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  callbackURL: 'http://localhost:8080/auth/google/callback',
+},
+async(accessToken, refreshToken, profile, done) => {
+  try {
+    const email = profile.emails[0].value;
+    const existingUser = await Auth.findOne({ googleId: profile.id });
+    if (existingUser) {
+      return done(null, existingUser);
+    }
+    
+    //create new user
+    const newUser = await Auth({
+      googleId: profile.id,
+      displayName: profile.displayName,
+      email: email,
+      photo: profile.photos[0].value
+    })
+    const savedUser = await newUser.save();
+    done(null, savedUser);
+  } catch (error) {
+  return done(null, profile); 
+  }  // Save or use profile
+}));
 
-// API: Chat message routes
-const Message = mongoose.model(
-  'Message',
-  new mongoose.Schema({
-    sender: String,
-    text: String,
-    timestamp: { type: Date, default: Date.now },
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+// Google OAuth Routes
+app.get('/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account',
   })
 );
 
-app.post('/messages', async (req, res) => {
-  const { sender, text } = req.body;
-  const newMessage = new Message({ sender, text });
-  await newMessage.save();
-  res.status(201).send(newMessage);
+app.get('/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: "http://localhost:3000/"
+  }),
+  (req, res) => {
+    res.redirect('http://localhost:5173/logging-in');
+  }
+);
+
+// Check login status
+app.get('/auth/check-login', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ loggedIn: true, user: req.user });
+  } else {
+    res.json({ loggedIn: false });
+  }
 });
 
-app.get('/messages', async (req, res) => {
-  const messages = await Message.find().sort({ timestamp: 1 });
-  res.status(200).send(messages);
-});
+// CORS and JSON middleware
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
+app.use(express.json());
 
-// // Catch-all route for SPA (React/Frontend)
-// app.get('/*', (req, res) => {
-//   res.sendFile(path.join(_dirname, 'Mirror_Frontend', 'dist', 'index.html'));
-// });
+// Serve frontend
+const _dirname = path.resolve();
+app.use(express.static(path.join(_dirname, 'Mirror_Frontend', 'dist')));
 
-// Database connection
+// API routes
+app.use('/users', userRoute);
+
+// Connect to MongoDB
 mongoose.connect(process.env.DATABASE_URL, {
   dbName: 'mirror_space',
-})
-  .then(() => console.log('✅ MongoDB connected'))
+}).then(() => console.log('✅ MongoDB connected'))
   .catch((err) => console.error('❌ MongoDB connection failed:', err));
 
-// Start the server
+// Start server
 const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);

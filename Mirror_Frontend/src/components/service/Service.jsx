@@ -75,7 +75,7 @@ const Service = () => {
               <div className='absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg'>
               <button
                   className='bg-red-700 text-white font-semibold px-4 py-2 rounded-lg hover:bg-black-200'
-                  onClick={() => navigate(service.path)} // 👈 navigate to the path
+                  onClick={() => navigate(service.path)}
                 >
                   View More
                 </button>

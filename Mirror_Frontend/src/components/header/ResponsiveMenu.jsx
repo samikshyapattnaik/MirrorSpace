@@ -1,13 +1,20 @@
 import React from "react";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle ,FaTimes } from "react-icons/fa";
 
-const ResponsiveMenu = ({ showMenu }) => {
+const ResponsiveMenu = ({ showMenu , setShowMenu }) => {
   return (
     <div
       className={` ${
         showMenu ? "left-0" : "-left-[100%]"
       } h-screen w-[80%] bg-slate-950 fixed top-0 z-50 transition-all duration-500 pt-24 pb-6 px-8 flex flex-col justify-between text-white`}
     >
+       {/* Close Icon */}
+      <div className="absolute top-9 right-6">
+        <button onClick={() => setShowMenu(false)}>
+          <FaTimes size={28} />
+        </button>
+      </div>
+
       <div>
         <div className="flex items-center justify-start gap-3">
           <FaUserCircle size={50} />

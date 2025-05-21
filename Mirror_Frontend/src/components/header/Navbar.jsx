@@ -159,7 +159,7 @@ const Navbar = ({onLoginClick}) => {
               <li className=" text-black/80 hover:text-primary"
                    onClick={onLoginClick}> Login</li>
               <li className="text-black/80 hover:text-primary">
-              <a href="mirrorspace-40ev.onrender.com//blogs">Our Blogs</a>
+              <a href="/blogs">Our Blogs</a>
               </li>
               
               {/* Light and dark mode switcher */}
