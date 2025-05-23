@@ -6,7 +6,7 @@ const LoggingInPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-  axios.get('http://localhost:8080/auth/check-login', { withCredentials: true })
+  axios.get('https://mirrorspace-39h4.onrender.com/auth/check-login', { withCredentials: true })
     .then(res => {
       if (res.data.loggedIn) {
         navigate('/');
