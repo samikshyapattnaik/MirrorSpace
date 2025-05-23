@@ -101,9 +101,9 @@ app.use('/users', userRoute);
 
 // Connect to MongoDB
 mongoose.connect(process.env.DATABASE_URL, {
-  dbName: 'mirror_space',
-}).then(() => console.log('✅ MongoDB connected'))
-  .catch((err) => console.error('❌ MongoDB connection failed:', err));
+  
+ }).then(() => console.log('✅ MongoDB connected')) 
+ .catch((err) => console.error('❌ MongoDB connection failed:', err));
 
 // Start server
 const PORT = process.env.PORT || 8080;
