@@ -41,7 +41,7 @@ export default function RegisterForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/users/register",
+        "https://mirrorspace-39h4.onrender.com/users/register",
         formData,
         {
           headers: { "Content-Type": "application/json" },
