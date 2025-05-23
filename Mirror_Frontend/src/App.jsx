@@ -62,14 +62,6 @@ useEffect(() => {
           onLogin={handleLogin}
         />
       )}
-{/* 
-      <div className="p-6">
-        {isAuthenticated ? (
-          <h1 className="text-green-600 font-bold">Welcome to your protected content!</h1>
-        ) : (
-          <h1 className="text-gray-500">You must log in to view content.</h1>
-        )}
-      </div> */}
 
       <Hero />
       <OverviewCounter />
