@@ -206,8 +206,9 @@ const Navbar = ({onLoginClick}) => {
         </nav>
       </header>
       {/* Mobile menu section */}
-      <ResponsiveMenu showMenu={showMenu} />
-    </>
+ {/* Responsive Menu */}
+<ResponsiveMenu showMenu={showMenu} setShowMenu={setShowMenu} />    
+</>
   );
 };
 

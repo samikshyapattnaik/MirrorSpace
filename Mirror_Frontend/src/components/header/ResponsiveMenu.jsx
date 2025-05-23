@@ -1,50 +1,46 @@
 import React from "react";
-import { FaUserCircle ,FaTimes } from "react-icons/fa";
+import { FaUserCircle, FaTimes } from "react-icons/fa";
 
-const ResponsiveMenu = ({ showMenu , setShowMenu }) => {
+const ResponsiveMenu = ({ showMenu, setShowMenu }) => {
   return (
     <div
-      className={` ${
-        showMenu ? "left-0" : "-left-[100%]"
-      } h-screen w-[80%] bg-slate-950 fixed top-0 z-50 transition-all duration-500 pt-24 pb-6 px-8 flex flex-col justify-between text-white`}
+      className={`fixed top-0 left-0 h-full w-[80%] max-w-sm bg-slate-950 text-white z-[9999] transition-transform duration-500 ${
+        showMenu ? "translate-x-0" : "-translate-x-full"
+      } flex flex-col justify-between p-6`}
     >
-       {/* Close Icon */}
-      <div className="absolute top-9 right-6">
-        <button onClick={() => setShowMenu(false)}>
-          <FaTimes size={28} />
-        </button>
+      {/* User Info */}
+      <div className="mt-12 flex items-center gap-3">
+        <FaUserCircle size={50} />
+        <div>
+          <h1>Mirror Space</h1>
+          <h1 className="text-sm text-slate-400">Premium user</h1>
+        </div>
       </div>
 
-      <div>
-        <div className="flex items-center justify-start gap-3">
-          <FaUserCircle size={50} />
-          <div>
-            <h1>Mirror Space</h1>
-            <h1 className="text-sm text-slate-500">Premium user</h1>
-          </div>
-        </div>
-        <nav className="mt-12">
-          <ul className="space-y-4 text-xl">
-            <li className="hover:text-primary transition-all duration-200">
-              <a href="/hero">Home</a>
-            </li>
-            <li className="hover:text-primary transition-all duration-200">
-              <a href="/service">Services</a>
-            </li>
-            <li className="hover:text-primary transition-all duration-200">
-              <a href="/">Portfolio</a>
-            </li>
-            <li className="hover:text-primary transition-all duration-200">
-              <a href="/footer">Contact</a>
-            </li>
-            <li className="hover:text-primary transition-all duration-200">
-              <a href="/">Our Interior</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <div className="footer">
-        <h1>© 2025 All Rights Reserved</h1>
+      {/* Navigation */}
+      <nav className="mt-10 flex-1">
+        <ul className="space-y-6 text-xl">
+          <li className="hover:text-orange-400 transition">
+            <a href="/hero">Home</a>
+          </li>
+          <li className="hover:text-orange-400 transition">
+            <a href="/service">Services</a>
+          </li>
+          <li className="hover:text-orange-400 transition">
+            <a href="/">Portfolio</a>
+          </li>
+          <li className="hover:text-orange-400 transition">
+            <a href="/footer">Contact</a>
+          </li>
+          <li className="hover:text-orange-400 transition">
+            <a href="/">Our Interior</a>
+          </li>
+        </ul>
+      </nav>
+
+      {/* Footer */}
+      <div className="text-sm text-slate-400 text-center">
+        © 2025 All Rights Reserved
       </div>
     </div>
   );
