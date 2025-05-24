@@ -26,10 +26,10 @@ const footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-3 text-red-700">Quick Links</h3>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:underline">Home</a></li>
-            <li><a href="#" className="hover:underline">Services</a></li>
-            <li><a href="#" className="hover:underline">Portfolio</a></li>
-            <li><a href="#" className="hover:underline">Contact</a></li>
+            <li><a href="/home" className="hover:underline">Home</a></li>
+            <li><a href="/service" className="hover:underline">Services</a></li>
+            <li><a href="/" className="hover:underline">Portfolio</a></li>
+            <li><a href="/contact" className="hover:underline">Contact</a></li>
           </ul>
           <h3 className="text-lg font-semibold mb-3">Message</h3>
           <form className="flex flex-col space-y-3">
@@ -63,9 +63,9 @@ const footer = () => {
 
           <h3 className="text-lg font-semibold mt-6 mb-2">Follow Us</h3>
           <div className="flex space-x-4 text-xl">
-            <a href="#" className="hover:text-blue-500" aria-label="Facebook"><FaFacebookF /></a>
-            <a href="#" className="hover:text-pink-500" aria-label="Instagram"><FaInstagram /></a>
-            <a href="#" className="hover:text-blue-400" aria-label="Twitter"><FaTwitter /></a>
+            <a href="https://www.facebook.com/Bricknbar/" className="hover:text-blue-500" aria-label="Facebook"><FaFacebookF /></a>
+            <a href="https://www.instagram.com/Bricknbar/" className="hover:text-pink-500" aria-label="Instagram"><FaInstagram /></a>
+            <a href="https://www.x.com/Bricknbar/" className="hover:text-blue-400" aria-label="Twitter"><FaTwitter /></a>
             <a href="#" className="hover:text-blue-600" aria-label="LinkedIn"><FaLinkedinIn /></a>
           </div>
         </div>

@@ -16,7 +16,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 useEffect(() => {
-  fetch('http://localhost:8080/auth/check-login', {
+  fetch('https://mirrorspace-39h4.onrender.com/auth/check-login', {
     credentials: 'include', 
   })
     .then((res) => res.json())
