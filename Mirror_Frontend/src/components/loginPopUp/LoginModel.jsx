@@ -35,7 +35,7 @@ const LoginModal = ({ onClose, onLogin }) => {
 
   // Google login (redirect to backend)
   const handleGoogleLogin = () => {
-    window.open("http://localhost:8080/auth/google", "_self"); // Redirect to backend Google login
+    window.open("https://mirrorspace-39h4.onrender.com/auth/google", "_self"); // Redirect to backend Google login
   };
 
   return (
